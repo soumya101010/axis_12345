@@ -19,7 +19,7 @@
     "@types/three": "^0.183.1",
     "cloudinary": "^2.9.0",
     "lucide-react": "^0.575.0",
-    "mongodb": "^7.1.0",
+    "mongodb": "^6.13.0",
     "mongoose": "^9.2.2",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.30",
