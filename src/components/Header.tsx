@@ -12,9 +12,9 @@ export function Header() {
     if (!session?.user) return null;
 
     return (
-        <header className="flex justify-between items-center py-6 border-b-4 border-white mb-10 md:mb-16 relative bg-black gap-4">
+        <header className="flex justify-between items-center py-6 border-b-4 border-white mb-10 md:mb-16 relative bg-black gap-4 overflow-hidden">
             {/* Extreme Left / Logo & Profile Group */}
-            <div className="flex items-center gap-4 md:gap-10 overflow-hidden">
+            <div className="flex items-center gap-3 md:gap-10 overflow-hidden min-w-0 flex-1">
                 {/* Mobile Menu Toggle */}
                 <button
                     onClick={toggle}

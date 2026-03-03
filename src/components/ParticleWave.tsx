@@ -114,9 +114,9 @@ const ParticleWave: React.FC = () => {
                       if (dist > 0.5) discard;
                       
                       float illumination = smoothstep(-150.0, 150.0, vY);
-                      float alpha = smoothstep(0.5, 0.0, dist) * vOpacity * (0.6 + illumination * 0.4);
+                      float alpha = smoothstep(0.5, 0.0, dist) * vOpacity * (0.8 + illumination * 0.5);
                       
-                      gl_FragColor = vec4(color, alpha * 0.9);
+                      gl_FragColor = vec4(color, alpha * 1.0);
                     }
                 `,
                 transparent: true,

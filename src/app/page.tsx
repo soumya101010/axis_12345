@@ -114,9 +114,20 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 z-20 flex flex-col items-center gap-2 animate-bounce">
-          <div className="w-px h-8 bg-gradient-to-b from-transparent to-white/40" />
+        {/* Scroll-down gesture indicator */}
+        <div className="absolute bottom-10 z-20 flex flex-col items-center gap-3 scroll-down-indicator">
+          <span className="text-[0.5rem] font-bold tracking-[0.5em] uppercase text-white/30">Scroll Down</span>
+          <div className="flex flex-col items-center gap-1">
+            <svg width="20" height="10" viewBox="0 0 20 10" className="chevron-1">
+              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <svg width="20" height="10" viewBox="0 0 20 10" className="chevron-2">
+              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <svg width="20" height="10" viewBox="0 0 20 10" className="chevron-3">
+              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
         </div>
 
         {/* Bottom fade — smooth hero-to-content transition */}
@@ -351,6 +362,27 @@ export default function LandingPage() {
                 }
                 .animate-glitch-red {
                     animation: glitch-red 4.2s infinite linear;
+                }
+                @keyframes chevron-cascade {
+                    0% { opacity: 0; transform: translateY(-4px); }
+                    50% { opacity: 1; transform: translateY(0); }
+                    100% { opacity: 0; transform: translateY(4px); }
+                }
+                .scroll-down-indicator {
+                    animation: fade-pulse 3s infinite ease-in-out;
+                }
+                .scroll-down-indicator .chevron-1 {
+                    animation: chevron-cascade 1.8s infinite ease-in-out;
+                }
+                .scroll-down-indicator .chevron-2 {
+                    animation: chevron-cascade 1.8s 0.3s infinite ease-in-out;
+                }
+                .scroll-down-indicator .chevron-3 {
+                    animation: chevron-cascade 1.8s 0.6s infinite ease-in-out;
+                }
+                @keyframes fade-pulse {
+                    0%, 100% { opacity: 0.6; }
+                    50% { opacity: 1; }
                 }
             `}</style>
     </div>

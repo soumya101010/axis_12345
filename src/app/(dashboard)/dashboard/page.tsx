@@ -81,7 +81,7 @@ export default function DashboardPage() {
         <div className="space-y-12 animate-in fade-in duration-700">
             {/* Header */}
             <header className="relative pt-6 md:pt-12 pb-8 border-b-4 border-white">
-                <div className="absolute top-0 right-0 w-64 h-64 border-4 border-white rounded-full translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-64 h-64 border-4 border-white rounded-full translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none hidden md:block" />
                 <div className="relative z-10">
                     <p className="text-white text-[0.6rem] md:text-xs tracking-[0.4em] font-bold mb-4">{date}</p>
                     <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-none">
