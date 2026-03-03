@@ -12,7 +12,7 @@ export default function SetupRolePage() {
 
     useEffect(() => {
         if (status === "authenticated" && (session?.user as any)?.role) {
-            router.push("/");
+            router.push("/dashboard");
         }
     }, [session, status, router]);
 
@@ -26,8 +26,9 @@ export default function SetupRolePage() {
             });
 
             if (res.ok) {
-                await update({ role }); // Force NextAuth to refresh its token/session
-                router.push("/");
+                // The update() call will trigger the jwt callback in auth.ts
+                await update({ role });
+                router.push("/dashboard");
                 router.refresh();
             } else {
                 console.error("Failed to set role");

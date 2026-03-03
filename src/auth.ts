@@ -32,22 +32,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
             return true;
         },
-        async jwt({ token, user, account, profile }) {
+        async jwt({ token, user, account, profile, trigger, session }) {
+            // Handle manual session updates (from client update() call)
+            if (trigger === "update" && session?.role) {
+                token.role = session.role;
+                console.log(`[AUTH JWT] Updated role to ${token.role} via trigger`);
+            }
+
             // Force fetch MongoDB ID if it's missing or doesn't look like a valid ObjectID
-            // Google IDs are typically numeric and long, Mongo IDs are 24-char hex
             const isMongoId = token.id && typeof token.id === 'string' && /^[0-9a-fA-F]{24}$/.test(token.id);
 
-            if (token.email && (!token.id || !isMongoId)) {
+            if (token.email && (!token.id || !isMongoId || !token.role)) {
                 try {
                     await connectToDatabase();
                     const dbUser = await User.findOne({ email: token.email });
                     if (dbUser) {
                         token.id = dbUser._id.toString();
                         token.role = dbUser.role || null;
-                        console.log(`[AUTH JWT] Synced MongoID for ${token.email}: ${token.id}`);
+                        console.log(`[AUTH JWT] Synced Mongo data for ${token.email}: ${token.id}, Role: ${token.role}`);
                     }
                 } catch (err) {
-                    console.error("[AUTH JWT] Failed to sync MongoDB ID:", err);
+                    console.error("[AUTH JWT] Failed to sync MongoDB data:", err);
                 }
             }
             return token;
