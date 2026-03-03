@@ -84,7 +84,7 @@ export default function DashboardPage() {
                 <div className="absolute top-0 right-0 w-64 h-64 border-4 border-white rounded-full translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none hidden md:block" />
                 <div className="relative z-10">
                     <p className="text-white text-[0.6rem] md:text-xs tracking-[0.4em] font-bold mb-4">{date}</p>
-                    <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase text-white leading-none">
+                    <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter uppercase text-white leading-none">
                         Overview
                     </h1>
                 </div>
