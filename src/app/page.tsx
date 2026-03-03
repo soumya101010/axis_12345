@@ -94,10 +94,10 @@ export default function LandingPage() {
           </nav>
 
           <div className="mb-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <h1 className="text-4xl md:text-8xl font-black tracking-[0.4em] md:tracking-[1.5em] mr-[-0.4em] md:mr-[-1.5em] uppercase drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+            <h1 className="text-4xl md:text-8xl font-black tracking-tight md:tracking-[1.5em] md:mr-[-1.5em] uppercase drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
               AXIS
             </h1>
-            <p className="text-white/50 text-[0.55rem] md:text-xs tracking-[0.3em] md:tracking-[0.5em] uppercase mt-5 font-bold">
+            <p className="text-white/50 text-[0.55rem] md:text-xs tracking-[0.2em] md:tracking-[0.5em] uppercase mt-5 font-bold">
               Discipline over dopamine.
             </p>
           </div>
@@ -116,16 +116,16 @@ export default function LandingPage() {
 
         {/* Scroll-down gesture indicator */}
         <div className="absolute bottom-10 z-20 flex flex-col items-center gap-3 scroll-down-indicator">
-          <span className="text-[0.5rem] font-bold tracking-[0.5em] uppercase text-white/70">Scroll Down</span>
+          <span className="text-[0.5rem] font-bold tracking-[0.5em] uppercase text-white">Scroll Down</span>
           <div className="flex flex-col items-center gap-1">
             <svg width="20" height="10" viewBox="0 0 20 10" className="chevron-1">
-              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <polyline points="2,2 10,8 18,2" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <svg width="20" height="10" viewBox="0 0 20 10" className="chevron-2">
-              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <svg width="20" height="10" viewBox="0 0 20 10" className="chevron-3">
-              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <polyline points="2,2 10,8 18,2" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         </div>
