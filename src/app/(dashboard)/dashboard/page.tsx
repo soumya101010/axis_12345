@@ -35,7 +35,9 @@ export default function DashboardPage() {
             .filter((s: any) => new Date(s.date) >= sevenDaysAgo)
             .reduce((acc: number, curr: any) => acc + curr.durationMinutes, 0)
         : 0;
-    const focusScore = Math.min(100, Math.floor(50 + (recentFocusMins / 60) * 10));
+    const focusScore = recentFocusMins > 0
+        ? Math.min(100, Math.floor(50 + (recentFocusMins / 60) * 10))
+        : 0;
 
     // Intelligence Generation
     const wealthStatus = totalExpenses <= (totalIncome || 5000) ? "Optimal" : "Critical";
