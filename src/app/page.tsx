@@ -94,10 +94,10 @@ export default function LandingPage() {
           </nav>
 
           <div className="mb-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <h1 className="text-4xl md:text-8xl font-black tracking-tight md:tracking-[1.5em] md:mr-[-1.5em] uppercase drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+            <h1 className="text-4xl md:text-8xl font-black tracking-[0.8em] md:tracking-[1.5em] mr-[-0.8em] md:mr-[-1.5em] uppercase drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
               AXIS
             </h1>
-            <p className="text-white/50 text-[0.55rem] md:text-xs tracking-[0.2em] md:tracking-[0.5em] uppercase mt-5 font-bold">
+            <p className="text-white/50 text-[0.55rem] md:text-xs tracking-[0.4em] md:tracking-[0.5em] uppercase mt-5 font-bold">
               Discipline over dopamine.
             </p>
           </div>

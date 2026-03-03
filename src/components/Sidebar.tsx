@@ -52,7 +52,7 @@ export function Sidebar({ userRole }: { userRole: string }) {
                 onClick={close}
             />
 
-            <aside className={`fixed left-0 top-0 h-[100dvh] w-72 bg-black border-r-2 border-white flex-col z-[60] overflow-hidden transition-transform duration-300 ease-in-out md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"} md:flex`}>
+            <aside className={`fixed left-0 top-0 h-[100dvh] w-72 bg-black border-r-2 border-white flex flex-col z-[60] overflow-hidden transition-transform duration-300 ease-in-out md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 {/* Geometric Texture Overlay */}
                 <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
                     backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
@@ -71,7 +71,7 @@ export function Sidebar({ userRole }: { userRole: string }) {
                     </button>
                 </div>
 
-                <nav className="flex-1 relative px-4 overflow-y-auto no-scrollbar overscroll-contain">
+                <nav className="flex-1 relative px-4 overflow-y-auto no-scrollbar">
                     <ul className="space-y-2 pb-10">
                         {navItems.map((item) => {
                             const isActive = pathname === item.href || (item.href !== "/today" && pathname.startsWith(item.href));
