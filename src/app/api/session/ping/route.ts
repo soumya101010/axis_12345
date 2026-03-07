@@ -15,7 +15,7 @@ export async function POST(req: Request) {
         await connectToDatabase();
 
         await User.updateOne(
-            { email: session.user.email },
+            { email: session.user.email as string },
             { $set: { lastActive: new Date() } }
         );
 

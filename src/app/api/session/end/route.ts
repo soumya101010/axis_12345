@@ -24,7 +24,7 @@ export async function POST(req: Request) {
             await dbSession.save();
 
             await User.updateOne(
-                { email: session.user.email },
+                { email: session.user.email as string },
                 {
                     $inc: { totalTimeSpent: duration },
                     $set: { lastActive: endTime }

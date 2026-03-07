@@ -18,7 +18,8 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const session = await auth();
-        if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session?.user?.id || !session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        const email = session.user.email as string;
         const { label, durationMinutes } = await req.json();
         if (!durationMinutes) return NextResponse.json({ error: "Duration is required" }, { status: 400 });
         await connectToDatabase();
@@ -33,11 +34,11 @@ export async function POST(req: Request) {
             const Interaction = (await import("@/models/Interaction")).default;
             const User = (await import("@/models/User")).default;
             await Interaction.create({
-                email: session.user.email,
+                email: session.user.email as string,
                 action: "focus_started",
                 metadata: { sessionId: focusSession._id.toString(), label: focusSession.label, duration: durationMinutes }
             });
-            await User.updateOne({ email: session.user.email }, { $inc: { totalInteractions: 1 } });
+            await User.updateOne({ email: session.user.email as string }, { $inc: { totalInteractions: 1 } });
         } catch (e) {
             console.error("Tracking Error:", e);
         }

@@ -18,7 +18,7 @@ export async function POST() {
         });
 
         await User.updateOne(
-            { email: session.user.email },
+            { email: session.user.email as string },
             { $set: { lastActive: new Date() } }
         );
 
