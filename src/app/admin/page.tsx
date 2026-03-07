@@ -33,6 +33,8 @@ export default function AdminDashboard() {
     const [stats, setStats] = useState<any>(null);
     const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
     const [interactions, setInteractions] = useState<any[]>([]);
+    const [userList, setUserList] = useState<any[]>([]);
+    const [showUserModal, setShowUserModal] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -44,15 +46,17 @@ export default function AdminDashboard() {
 
         const fetchData = async () => {
             try {
-                const [statsRes, onlineRes, interactRes] = await Promise.all([
+                const [statsRes, onlineRes, interactRes, usersRes] = await Promise.all([
                     fetch("/api/admin/stats"),
                     fetch("/api/admin/online-users"),
-                    fetch("/api/admin/interactions")
+                    fetch("/api/admin/interactions"),
+                    fetch("/api/admin/users")
                 ]);
 
                 setStats(await statsRes.json());
                 setOnlineUsers(await onlineRes.json());
                 setInteractions(await interactRes.json());
+                setUserList(await usersRes.json());
             } catch (error) {
                 console.error("Failed to fetch admin stats:", error);
             } finally {
@@ -73,8 +77,11 @@ export default function AdminDashboard() {
         );
     }
 
-    const StatCard = ({ title, value, icon: Icon, color }: any) => (
-        <div className="bg-[#111] border border-white/10 p-6 rounded-2xl hover:border-white/20 transition-all group">
+    const StatCard = ({ title, value, icon: Icon, color, onClick }: any) => (
+        <div
+            onClick={onClick}
+            className={`bg-[#111] border border-white/10 p-6 rounded-2xl hover:border-white/20 transition-all group ${onClick ? 'cursor-pointer' : ''}`}
+        >
             <div className="flex items-start justify-between">
                 <div>
                     <p className="text-white/50 text-sm font-medium mb-1">{title}</p>
@@ -88,7 +95,64 @@ export default function AdminDashboard() {
     );
 
     return (
-        <div className="min-h-screen bg-black text-white p-8">
+        <div className="min-h-screen bg-black text-white p-8 relative">
+            {/* User List Modal */}
+            {showUserModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+                    <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowUserModal(false)}></div>
+                    <div className="relative bg-[#111] border border-white/10 w-full max-w-4xl max-h-[80vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl">
+                        <div className="p-6 border-b border-white/5 flex items-center justify-between bg-[#161616]">
+                            <h2 className="text-2xl font-bold flex items-center gap-3">
+                                <Users className="text-blue-500" /> System Users
+                            </h2>
+                            <button
+                                onClick={() => setShowUserModal(false)}
+                                className="w-10 h-10 rounded-full hover:bg-white/5 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <div className="p-6 overflow-y-auto no-scrollbar flex-1">
+                            <table className="w-full text-left">
+                                <thead>
+                                    <tr className="text-white/30 text-xs border-b border-white/5 uppercase tracking-widest font-bold">
+                                        <th className="pb-4">User</th>
+                                        <th className="pb-4">Email</th>
+                                        <th className="pb-4">Joined</th>
+                                        <th className="pb-4">Logins</th>
+                                        <th className="pb-4 text-right">Last Login</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {userList.map((user, i) => (
+                                        <tr key={i} className="group hover:bg-white/[0.02] transition-colors">
+                                            <td className="py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500/20 to-purple-500/20 flex items-center justify-center text-sm font-bold border border-white/5 overflow-hidden">
+                                                        {user.avatarUrl ? (
+                                                            <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" />
+                                                        ) : user.name?.[0] || 'U'}
+                                                    </div>
+                                                    <span className="text-sm font-semibold">{user.name}</span>
+                                                </div>
+                                            </td>
+                                            <td className="py-4 text-sm text-white/50">{user.email}</td>
+                                            <td className="py-4 text-sm text-white/40 italic">
+                                                {new Date(user.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="py-4 text-sm font-mono text-blue-400">{user.loginCount || 0}</td>
+                                            <td className="py-4 text-right text-sm text-white/30">
+                                                {user.lastLogin ? new Date(user.lastLogin).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Never'}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <header className="mb-12 flex items-center justify-between">
                 <div>
                     <h1 className="text-4xl font-extrabold tracking-tight mb-2">Admin Command Center</h1>
@@ -106,7 +170,13 @@ export default function AdminDashboard() {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <StatCard title="Total Users" value={stats?.totalUsers || 0} icon={Users} color="text-blue-500 bg-blue-500" />
+                <StatCard
+                    title="Total Users"
+                    value={stats?.totalUsers || 0}
+                    icon={Users}
+                    color="text-blue-500 bg-blue-500"
+                    onClick={() => setShowUserModal(true)}
+                />
                 <StatCard title="Total Logins" value={stats?.totalLogins || 0} icon={Activity} color="text-purple-500 bg-purple-500" />
                 <StatCard title="Total Interactions" value={stats?.totalInteractions || 0} icon={MousePointer2} color="text-orange-500 bg-orange-500" />
                 <StatCard title="Avg Session" value={`${Math.round((stats?.averageSessionDuration || 0) / 60)}m`} icon={Clock} color="text-green-500 bg-green-500" />
