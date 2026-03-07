@@ -38,11 +38,23 @@ const getNavItems = (role: string) => {
 };
 
 import { useSidebar } from "@/context/SidebarContext";
+import { useSession } from "next-auth/react";
+
+const ADMIN_EMAIL = "soumyabiswas2004@gmail.com";
 
 export function Sidebar({ userRole }: { userRole: string }) {
     const pathname = usePathname();
+    const { data: session } = useSession();
     const navItems = getNavItems(userRole);
     const { isOpen, close } = useSidebar();
+
+    // Conditionally add Admin link
+    if (session?.user?.email === ADMIN_EMAIL) {
+        // Avoid duplicate if already added
+        if (!navItems.find(item => item.href === "/admin")) {
+            navItems.push({ name: "Admin", href: "/admin" });
+        }
+    }
 
     return (
         <>
