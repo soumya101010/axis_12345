@@ -9,6 +9,11 @@ export interface IUser extends Document {
     role?: 'student' | 'working_professional';
     aiUsageCount: number;
     createdAt: Date;
+    lastLogin?: Date;
+    loginCount: number;
+    totalTimeSpent: number; // in seconds
+    totalInteractions: number;
+    lastActive?: Date;
 }
 
 const UserSchema: Schema = new Schema({
@@ -19,7 +24,12 @@ const UserSchema: Schema = new Schema({
     tier: { type: String, enum: ['FREE', 'PREMIUM'], default: 'FREE' },
     role: { type: String, enum: ['student', 'working_professional'] },
     aiUsageCount: { type: Number, default: 0 },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    lastLogin: { type: Date },
+    loginCount: { type: Number, default: 0 },
+    totalTimeSpent: { type: Number, default: 0 },
+    totalInteractions: { type: Number, default: 0 },
+    lastActive: { type: Date }
 });
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);

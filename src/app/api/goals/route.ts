@@ -23,6 +23,21 @@ export async function POST(req: Request) {
         if (!title) return NextResponse.json({ error: "Title is required" }, { status: 400 });
         await connectToDatabase();
         const goal = await Goal.create({ userId: session.user.id, title, targetDate, priority: priority || 2 });
+
+        // Track interaction
+        try {
+            const Interaction = (await import("@/models/Interaction")).default;
+            const User = (await import("@/models/User")).default;
+            await Interaction.create({
+                email: session.user.email,
+                action: "goal_created",
+                metadata: { goalId: goal._id.toString(), title: goal.title }
+            });
+            await User.updateOne({ email: session.user.email }, { $inc: { totalInteractions: 1 } });
+        } catch (e) {
+            console.error("Tracking Error:", e);
+        }
+
         return NextResponse.json(goal, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: "Failed to create goal", details: String(error) }, { status: 500 });

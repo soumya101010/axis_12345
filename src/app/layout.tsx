@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,6 +36,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} antialiased selection:bg-white/20 font-sans`} suppressHydrationWarning>
         <Providers>
+          <AnalyticsTracker />
           {children}
         </Providers>
       </body>

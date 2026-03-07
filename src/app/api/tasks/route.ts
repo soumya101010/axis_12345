@@ -42,6 +42,20 @@ export async function POST(req: Request) {
             dueDate,
         });
 
+        // Track interaction
+        try {
+            const Interaction = (await import("@/models/Interaction")).default;
+            const User = (await import("@/models/User")).default;
+            await Interaction.create({
+                email: session.user.email,
+                action: "task_created",
+                metadata: { taskId: task._id.toString(), title: task.title }
+            });
+            await User.updateOne({ email: session.user.email }, { $inc: { totalInteractions: 1 } });
+        } catch (e) {
+            console.error("Tracking Error:", e);
+        }
+
         console.log("[TASKS POST] Created task:", task._id);
         return NextResponse.json(task, { status: 201 });
     } catch (error) {

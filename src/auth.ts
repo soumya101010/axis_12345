@@ -27,7 +27,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         email: user.email || "",
                         name: user.name || "",
                         avatarUrl: user.image || "",
+                        loginCount: 1,
+                        lastLogin: new Date(),
                     });
+                } else {
+                    await User.updateOne(
+                        { email: user.email },
+                        {
+                            $inc: { loginCount: 1 },
+                            $set: { lastLogin: new Date() }
+                        }
+                    );
                 }
             }
             return true;

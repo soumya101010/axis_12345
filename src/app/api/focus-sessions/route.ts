@@ -27,6 +27,21 @@ export async function POST(req: Request) {
             label: label || "Deep Work",
             durationMinutes,
         });
+
+        // Track interaction
+        try {
+            const Interaction = (await import("@/models/Interaction")).default;
+            const User = (await import("@/models/User")).default;
+            await Interaction.create({
+                email: session.user.email,
+                action: "focus_started",
+                metadata: { sessionId: focusSession._id.toString(), label: focusSession.label, duration: durationMinutes }
+            });
+            await User.updateOne({ email: session.user.email }, { $inc: { totalInteractions: 1 } });
+        } catch (e) {
+            console.error("Tracking Error:", e);
+        }
+
         return NextResponse.json(focusSession, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: "Failed to log session", details: String(error) }, { status: 500 });
