@@ -18,30 +18,39 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     trustHost: true,
     callbacks: {
         async signIn({ user, account, profile }) {
-            if (account?.provider === "google") {
-                await connectToDatabase();
-                const existingUser = await User.findOne({ email: user.email });
-                if (!existingUser) {
-                    await User.create({
-                        googleId: account.providerAccountId,
-                        email: user.email || "",
-                        name: user.name || "",
-                        avatarUrl: user.image || "",
-                        loginCount: 1,
-                        lastLogin: new Date(),
-                    });
-                } else {
-                    await User.updateOne(
-                        { email: user.email },
-                        {
-                            $inc: { loginCount: 1 },
-                            $set: { lastLogin: new Date() }
-                        }
-                    );
-                }
+    if (account?.provider === "google") {
+        try {
+            await connectToDatabase();
+            const existingUser = await User.findOne({ email: user.email });
+            
+            if (!existingUser) {
+                await User.create({
+                    googleId: account.providerAccountId,
+                    email: user.email || "",
+                    name: user.name || "",
+                    avatarUrl: user.image || "",
+                    loginCount: 1,
+                    lastLogin: new Date(),
+                });
+            } else {
+                await User.updateOne(
+                    { email: user.email },
+                    {
+                        $inc: { loginCount: 1 },
+                        $set: { lastLogin: new Date() }
+                    }
+                );
             }
-            return true;
-        },
+            return true; // Success!
+            
+        } catch (error) {
+            // THIS is where the failure is happening
+            console.error("[AUTH SIGN-IN ERROR] Database connection or query failed:", error);
+            return false; // Safely reject the sign-in
+        }
+    }
+    return true;
+},
         async jwt({ token, user, account, profile, trigger, session }) {
             // Handle manual session updates (from client update() call)
             if (trigger === "update" && session?.role) {
